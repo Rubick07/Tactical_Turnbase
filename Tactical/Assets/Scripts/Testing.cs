@@ -11,7 +11,7 @@ public class Testing : MonoBehaviour
         Debug.Log(new GridPosition(5,7));
     }
 
-    private void Update()
+/*    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.T))
         {
@@ -21,5 +21,5 @@ public class Testing : MonoBehaviour
         {
             GridSystemVisual.Instance.ShowGridPositionList(unit.GetMoveAction().GetValidActionGridPositionList());
         }
-    }
+    }*/
 }

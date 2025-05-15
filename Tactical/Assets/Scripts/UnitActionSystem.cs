@@ -34,6 +34,9 @@ public class UnitActionSystem : MonoBehaviour
         if (isBusy)
             return;
 
+        if (!TurnSystem.Instance.IsPlayerTurn())
+            return;
+
         if (EventSystem.current.IsPointerOverGameObject())
             return;
 
@@ -61,6 +64,7 @@ public class UnitActionSystem : MonoBehaviour
             
             SetBusy();
             selectedAction.TakeAction(mouseGridPosition, ClearBusy);
+
             OnActionStarted?.Invoke(this, EventArgs.Empty);
 
         } 
@@ -92,6 +96,13 @@ public class UnitActionSystem : MonoBehaviour
                         //Unit Already Selected
                         return false;
                     }
+
+                    if (unit.IsEnemy())
+                    {
+
+                        return false;
+                    }
+
                 SetSelectedUnit(unit);
                 return true;
                 }

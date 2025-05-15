@@ -5,8 +5,12 @@ using UnityEngine;
 
 public abstract class BaseAction : MonoBehaviour
 {
+    public static event EventHandler OnAnyActionStart;
+    public static event EventHandler OnAnyActionComplete;
+
     protected Unit unit;
     protected bool isActive;
+
     protected Action onActionComplete;
 
     protected virtual void Awake()
@@ -30,5 +34,54 @@ public abstract class BaseAction : MonoBehaviour
     {
         return 1;
     }
+
+    protected void ActionStart(Action onActionComplete)
+    {
+        isActive = true;
+        this.onActionComplete = onActionComplete;
+
+        OnAnyActionStart?.Invoke(this, EventArgs.Empty);
+    }
+
+    protected void ActionComplete()
+    {
+        isActive = false;
+        onActionComplete();
+
+        OnAnyActionComplete?.Invoke(this, EventArgs.Empty);
+    }
+
+    public Unit GetUnit()
+    {
+        return unit;
+    }
+    
+    public EnemyAIAction GetBestEnemyAIAction()
+    {
+        List<EnemyAIAction> enemyAIActionList = new List<EnemyAIAction>();
+
+        List<GridPosition> validActionGridPositionList = GetValidActionGridPositionList();
+
+        foreach(GridPosition gridPosition in validActionGridPositionList)
+        {
+            EnemyAIAction enemyAIAction = GetEnemyAIAction(gridPosition);
+            enemyAIActionList.Add(enemyAIAction);
+        }
+
+        enemyAIActionList.Sort((EnemyAIAction a, EnemyAIAction b) => b.actionValue - a.actionValue);
+        if(enemyAIActionList.Count > 0)
+        {
+            return enemyAIActionList[0];
+        }
+        else
+        {
+            //gk bisa ngapa ngapain
+            return null;
+        }
+        
+    }
+
+    public abstract EnemyAIAction GetEnemyAIAction(GridPosition gridPosition);
+
 
 }
