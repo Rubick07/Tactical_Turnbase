@@ -23,6 +23,7 @@ public class ShootAction : BaseAction
 
     public event EventHandler onShoot;
 
+    [SerializeField] private LayerMask obstaclesLayerMask;
     private State state;
     private int maxShootDistance = 7;
     private float stateTimer;
@@ -144,6 +145,16 @@ public class ShootAction : BaseAction
 
                 if (targetUnit.IsEnemy() == unit.IsEnemy()  )
                     continue;
+
+                Vector3 unitWorldPosition = LevelGrid.Instance.GetWorldPosition(unitGridPosition);
+                Vector3 shootDir = (targetUnit.GetWorldPosition() - unitWorldPosition).normalized;
+
+                float unitShoulderHeight = 1.7f;
+                if(Physics.Raycast(unitWorldPosition + Vector3.up * unitShoulderHeight, shootDir, Vector3.Distance(unit.GetWorldPosition(), targetUnit.GetWorldPosition()), obstaclesLayerMask))
+                {
+                    //Kehalang
+                    continue;
+                }
 
                 validGridPositionList.Add(testGridPosition);
             }
