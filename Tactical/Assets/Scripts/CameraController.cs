@@ -5,81 +5,58 @@ using Unity.Cinemachine;
 
 public class CameraController : MonoBehaviour
 {
-    private const float MIN_FOLLOW_Y_OFFSET = 1f;
+
+    private const float MIN_FOLLOW_Y_OFFSET = 2f;
     private const float MAX_FOLLOW_Y_OFFSET = 12f;
 
-    [SerializeField] private CinemachinePositionComposer cinemachineCamera;
+    [SerializeField] private CinemachinePositionComposer cinemachineVirtualCamera;
 
+    //private CinemachineTransposer cinemachineTransposer;
+    private Vector3 targetFollowOffset;
+
+    private void Start()
+    {
+        //cinemachineTransposer = cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>();
+        targetFollowOffset = cinemachineVirtualCamera.TargetOffset;
+    }
 
     private void Update()
     {
         HandleMovement();
         HandleRotation();
         HandleZoom();
-        //Input.mouseScrollDelta
-
-        
-
     }
 
-    private void HandleZoom()
+    private void HandleMovement()
     {
-        Vector3 followOffset = cinemachineCamera.TargetOffset;
-        float zoomAmount = 1f;
+        Vector2 inputMoveDir = InputManager.Instance.GetCameraMoveVector();
 
-        if (Input.mouseScrollDelta.y > 0)
-        {
-            followOffset.y -= zoomAmount;
-        }
-        if (Input.mouseScrollDelta.y < 0)
-        {
-            followOffset.y += zoomAmount;
-        }
-        followOffset.y = Mathf.Clamp(followOffset.y, MIN_FOLLOW_Y_OFFSET, MAX_FOLLOW_Y_OFFSET);
-        cinemachineCamera.TargetOffset = followOffset;
+        float moveSpeed = 10f;
+
+        Vector3 moveVector = transform.forward * inputMoveDir.y + transform.right * inputMoveDir.x;
+        transform.position += moveVector * moveSpeed * Time.deltaTime;
     }
 
     private void HandleRotation()
     {
         Vector3 rotationVector = new Vector3(0, 0, 0);
 
-        if (Input.GetKey(KeyCode.Q))
-        {
-            rotationVector.y = -1f;
-        }
-        if (Input.GetKey(KeyCode.E))
-        {
-            rotationVector.y = +1f;
-        }
+        rotationVector.y = InputManager.Instance.GetCameraRotateAmount();
 
         float rotationSpeed = 100f;
         transform.eulerAngles += rotationVector * rotationSpeed * Time.deltaTime;
     }
 
-    private void HandleMovement()
+    private void HandleZoom()
     {
-        Vector3 inputMoveDir = new Vector3(0, 0, 0);
+        float zoomIncreaseAmount = 1f;
+        targetFollowOffset.y += InputManager.Instance.GetCameraZoomAmount() * zoomIncreaseAmount;
 
-        if (Input.GetKey(KeyCode.W))
-        {
-            inputMoveDir.z = +1f;
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            inputMoveDir.z = -1f;
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            inputMoveDir.x = -1f;
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            inputMoveDir.x = +1f;
-        }
+        targetFollowOffset.y = Mathf.Clamp(targetFollowOffset.y, MIN_FOLLOW_Y_OFFSET, MAX_FOLLOW_Y_OFFSET);
 
-        float moveSpeed = 5f;
-
-        Vector3 moveVector = transform.forward * inputMoveDir.z + transform.right * inputMoveDir.x;
-        transform.position += moveVector * moveSpeed * Time.deltaTime;
+        float zoomSpeed = 5f;
+        cinemachineVirtualCamera.TargetOffset =
+            Vector3.Lerp(cinemachineVirtualCamera.TargetOffset, targetFollowOffset, Time.deltaTime * zoomSpeed);
     }
+
 }

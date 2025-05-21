@@ -6,6 +6,7 @@ using UnityEngine;
 public class ShootAction : BaseAction
 {
 
+    public static event EventHandler<OnShootEventArgs> OnAnyShoot;
     public event EventHandler<OnShootEventArgs> OnShoot;
 
     public class OnShootEventArgs : EventArgs
@@ -66,6 +67,11 @@ public class ShootAction : BaseAction
     private void Shoot()
     {
         OnShoot?.Invoke(this, new OnShootEventArgs
+        {
+            targetUnit = targetUnit,
+            shootingUnit = unit
+        });
+        OnAnyShoot?.Invoke(this, new OnShootEventArgs
         {
             targetUnit = targetUnit,
             shootingUnit = unit
@@ -143,14 +149,15 @@ public class ShootAction : BaseAction
 
                 Unit targetUnit = LevelGrid.Instance.GetUnitAtGridPosition(testGridPosition);
 
-                if (targetUnit.IsEnemy() == unit.IsEnemy()  )
+                if (targetUnit.IsEnemy() == unit.IsEnemy())
                     continue;
 
                 Vector3 unitWorldPosition = LevelGrid.Instance.GetWorldPosition(unitGridPosition);
                 Vector3 shootDir = (targetUnit.GetWorldPosition() - unitWorldPosition).normalized;
 
                 float unitShoulderHeight = 1.7f;
-                if(Physics.Raycast(unitWorldPosition + Vector3.up * unitShoulderHeight, shootDir, Vector3.Distance(unit.GetWorldPosition(), targetUnit.GetWorldPosition()), obstaclesLayerMask))
+                if(Physics.Raycast(unitWorldPosition + Vector3.up * unitShoulderHeight, shootDir, 
+                    Vector3.Distance(unitWorldPosition, targetUnit.GetWorldPosition()), obstaclesLayerMask))
                 {
                     //Kehalang
                     continue;

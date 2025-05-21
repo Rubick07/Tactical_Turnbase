@@ -37,7 +37,7 @@ public class CameraManager : MonoBehaviour
 
                 Vector3 shootDir = (targetUnit.GetWorldPosition() - shooterUnit.GetWorldPosition()).normalized;
 
-                float shoulderOffsetAmount = 0.5f;
+                float shoulderOffsetAmount = 0.6f;
                 Vector3 shoulderOffset = Quaternion.Euler(0, 90, 0) * shootDir * shoulderOffsetAmount;
 
                 Vector3 actionCameraPosition = 
