@@ -60,7 +60,7 @@ public class EnemyAI : MonoBehaviour
 
     private void SetStateTakingTurn()
     {
-        timer = .5f;
+        timer = 1.5f;
         state = State.TakingTurn;
     }
 
