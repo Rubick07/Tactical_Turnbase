@@ -32,17 +32,17 @@ This project using Unity 6000.0.58f2
 
 |  Script       | Description                                                  |
 | ------------------- | ------------------------------------------------------------ |
-| `LevelGrid` |Manages Tilebase grid for Level|
-| `GridSystem` |Manages Tilebase grid|
-| `TurnSystem` |Manages Turn for unit|
-|  `UnitManager.cs` | Manages Unit in field|
+| `LevelGrid` |Manages the tile-based grid for the level|
+| `GridSystem` |Manages the tile-based grid system|
+| `TurnSystem` |Manages turn order and turn progression|
+|  `UnitManager.cs` | Manages all units on the battlefield|
 | `BaseAction.cs`  | Abstract base class for all unit actions |
-| `Unit.cs`  | Handles character data and combat actions for battle units |
-| `UnitAnimator.cs`  | Handles Unit Animation and effect |
-| `UnitActionSystem.cs`  | Manages for player Input in battle |
-| `CameraManager.cs`  | Manages camera position |
-| `InputManager.cs`  | Manages player input |
-| `EnemyAI.cs`  | Manages for Enemy AI in combat scene |
+| `Unit.cs`  | Stores unit data and handles combat actions |
+| `UnitAnimator.cs`  | Handles unit animations and visual effects|
+| `UnitActionSystem.cs`  | Manages player input and unit actions during battle. |
+| `CameraManager.cs`  | Manages camera movement and positioning |
+| `InputManager.cs`  | Handles player input. |
+| `EnemyAI.cs`  | Manages enemy AI behavior during combat. |
 | `etc`  | |
 
 
@@ -53,17 +53,17 @@ This project using Unity 6000.0.58f2
 
 ```
 ├── Tactical            # In this folder, containing all the Unity project files, to be opened by a Unity Editor
-   ├── Assets                       # In this folder, it contains all our code, assets, scenes, etc was not automatically created by Unity
-      ├── Animation                # In this folder, it contaions all animation clip and animation Controller
-      ├── Import                    # In this folder, it contaions all imported Unity Packages
-      ├── Material                 # In this folder, it contaions all materials
-      ├── Prefabs                   # In this folder, it contaions all prefabs for the games
-      ├── Scenes                    # In this folder, there are scenes. You can open these scenes to play the game via Unity
-      ├── Scripts                   # In this folder, it contaions all script for the games
-      ├── Settings                  # In this folder, it contaions base settings from unity
-      ├── TextMeshPro               # In this folder, it contaions plugin for TextMeshPro
-      ├── Texture                   # In this folder, it contaions texture
-      ├── TutorialInfo              # In this folder, it contaions URP packages
+   ├── Assets                       # Project assets and resources.
+      ├── Animation                # Animation clips and Animator Controllers.
+      ├── Import                    # Imported packages and third-party assets.
+      ├── Material                 # Materials used by game objects.
+      ├── Prefabs                   # Reusable game object prefabs.
+      ├── Scenes                    # Playable game scenes.
+      ├── Scripts                   # Gameplay and system scripts.
+      ├── Settings                  # Unity project settings.
+      ├── TextMeshPro               # TextMeshPro assets and resources.
+      ├── Texture                   # Textures and sprites.
+      ├── TutorialInfo              # Unity-generated tutorial and URP resources.
    ├── ...
       
 ```
