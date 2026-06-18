@@ -229,8 +229,6 @@ classDiagram
     class HealthSystem {
         +OnDead()
         +OnDamaged()
-        +OnBusyChanged(bool)
-        +OnActionStarted()
     }
 
     class BaseAction{
