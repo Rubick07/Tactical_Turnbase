@@ -149,62 +149,69 @@ config:
 ---
 flowchart TD
   start([Battle Start])
-  start --> move{Player Input}
+  start --> TurnSystemCheck{Check Is Player Turn}
+
+  TurnSystemCheck -->|Yes| move{Player Input}
+  TurnSystemCheck -->|No| EnemyAI[EnemyAI]
+
   
   move -->|Left Mouse Button| SU[Select Unit]
-  move -->|Left Mouse Button| EndTurn[EndTurn]
+  move -->|Click End Turn Button| EndTurn[EndTurn]
+
+  EndTurn --> ChangeTurnSystemEnemy[Change To Enemy Turn]
+
+  ChangeTurnSystemEnemy --> TurnSystemCheck
 
   SU --> CheckAction{does it have action points?}
 
   CheckAction -->|Yes| SelectAction[SelectAction]
-  CheckAction -->|No| ded[Cant perform Action] 
+  CheckAction -->|No| ded[Cant perform Action]
 
-  SelectAction --> MU[Move Unit]
-  SelectAction --> SelectActionTarget[Select Action Target]
+  ded --> move
+
+  SelectAction --> SelectActionTargetGrid[SelectActionTargetGrid]
   
-  SelectActionTarget -->ActionPerform[ActionPerform]
+  SelectActionTargetGrid --> PlayerUnitActionPerform[Player Unit Action Perform]
 
-ActionPerform --> DamageEnemyUnit[Damage Enemy Unit?]
+  PlayerUnitActionPerform --> CheckEnemyHealth{Is There Enemy Unit Health <= 0?}
 
-  DamageEnemyUnit -->|Yes| TargetTakeDamage[Target Take Damage]
-  DamageEnemyUnit -->|No| actionComplete[Action Complete] 
+    CheckEnemyHealth -->|Yes| EnemyUnitDead[Enemy Unit Dead]
+    CheckEnemyHealth -->|No| PlayerUnitActionComplete[Player Unit Action Complete]
 
-actionComplete --> move
+    EnemyUnitDead --> CheckEnemyUnitList{Check Unit Manager Are there still Enemy unit on the battlefield?}
 
-TargetTakeDamage --> TargetHealth{Target Health <= 0?}
-
-  TargetHealth -->|Yes| TargetDead[Target Dead]
-  TargetHealth -->|No| actionComplete[Action Complete]
-
-TargetDead --> UnitManagerUpdate{Are there still enemies on the battlefield?}
-
-  UnitManagerUpdate -->|Yes| actionComplete[Action Complete]
-  UnitManagerUpdate -->|No| PlayerWin[Victory!]
-
-EndTurn --> EnemyAI[EnemyAI]
-
-EnemyAi --> CheckActionEnemy{Check if Enemy Can Perform Actions}
-
-  CheckActionEnemy -->|Yes| EnemyChooseBestActionValue[Enemy Choose Best Action Value]
-  CheckActionEnemy -->|No| PlayerTurn[Player Turn]
-
-  EnemyChooseBestActionValue --> DamagePlayerUnit{Damage Player Unit?}
-
-  DamagePlayerUnit -->|Yes| PlayerTakeDamage[Player Take Damage]
-  DamagePlayerUnit -->|No| EnemyAI
-
-  PlayerTakeDamage --> CheckPlayerHealth{Check Player Unit Health <= 0}
-
-  CheckPlayerHealth -->|Yes| PlayerUnitDead[Player Unit Dead]
-  CheckPlayerHealth -->|No| EnemyAI
+    CheckEnemyUnitList -->|Yes| move
+    CheckEnemyUnitList -->|No| Victory[Victory!]
+    
+    PlayerUnitActionComplete --> move
   
-  PlayerUnitDead --> CheckPlayerUnitInBattlefield{Are there still Player unit on the battlefield?}
+    EnemyAI --> ChooseEnemyUnit[Choose Enemy Unit]
 
-  CheckPlayerUnitInBattlefield -->|Yes| EnemyAI
-  CheckPlayerUnitInBattlefield -->|No| PlayerLose[Defeat!]
+    ChooseEnemyUnit --> CheckEnemyUnitActionPoin[Check if Enemy Unit has Action Points]
 
-  PlayerTurn --> move
+    CheckEnemyUnitActionPoin -->|Yes| chooseBestEnemyAction[Choose Best Enemy Action]
+    CheckEnemyUnitActionPoin -->|No| CheckOtherEnemyUnit[Check Other Enemy Unit]
 
+    CheckOtherEnemyUnit --> EnemyEnd{Check if All Enemy Unit dont have ActionValue}
+
+    EnemyEnd -->|Yes| EnemyUnitEndTurn[Enemy Unit End Turn]
+    EnemyEnd -->|No| ChooseEnemyUnit[Check Other Enemy Unit]
+
+    ChooseBestEnemyAction --> EnemyActionPerform[EnemyActionPerform]
+
+    EnemyActionPerform --> CheckPlayerHealth{Is There Player Unit Health <= 0?}
+
+    CheckPlayerHealth -->|Yes| PlayerUnitDead[Player Unit Dead]
+    CheckPlayerHealth -->|No| EnemyAI
+
+    PlayerUnitDead --> CheckPlayerUnitList{Check Unit Manager Are there still Player unit on the battlefield?}
+
+    CheckPlayerUnitList -->|Yes| EnemyAI
+    CheckPlayerUnitList -->|No| Defeat[DEFEAT!]
+
+    EnemyUnitEndTurn --> ChangeToPlayerTurn[Change To Player Turn]
+    ChangeToPlayerTurn --> TurnSystemCheck
+    
 ```
 
 <br>
