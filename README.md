@@ -122,7 +122,7 @@ graph TD
 
 ## Modules and Features
 
-The 3D Tactical turn-based Combat gameplay with Xcom-inspired GridSystem,TurnSystem, BaseAction, and HealthSystem is powered by an extensive Unity C# scripting system.
+The 3D Tactical turn-based Combat gameplay with Xcom-inspired GridSystem,TurnSystem, EnemyAI, and HealthSystem is powered by an extensive Unity C# scripting system.
 
 |  📂 Name     | 🎬 Scene |  📋 Responsibility                                                 |
 | ------------------- |----------------| ------------------------------------------------------------ |
