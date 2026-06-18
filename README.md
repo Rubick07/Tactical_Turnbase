@@ -21,13 +21,13 @@ This project using Unity 6000.0.58f2
 
 ##  📜Scripts and Features
 
-• Command Pattern Implementation
-• Grid-Based Movement
-• Tilemap Combat System
-• Turn Management
-• Action Point System
-• Tactical Target Selection
-• Enemy Decision Making
+• Command Pattern Implementation <br>
+• Grid-Based Movement <br>
+• Tilemap Combat System <br>
+• Turn Management <br>
+• Action Point System <br>
+• Tactical Target Selection <br>
+• Enemy Decision Making <br>
 
 
 |  Script       | Description                                                  |
